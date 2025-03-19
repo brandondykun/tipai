@@ -1,6 +1,6 @@
 import React from "react";
 import { Dimensions, View } from "react-native";
-
+import { Colors } from "@/constants/Colors";
 type Props = {
   scanning: boolean;
   rectTop: number;
@@ -16,6 +16,10 @@ const TransparentOverlay = ({
   rectWidth,
   rectHeight,
 }: Props) => {
+  const DEFAULT_COLOR = Colors.slate[950];
+  const SCANNING_COLOR = Colors.lime[900];
+  const OPACITY = 0.6;
+
   return (
     <>
       <View
@@ -24,38 +28,42 @@ const TransparentOverlay = ({
           top: 0,
           left: 0,
           bottom: 0,
-          right: (dimensions.width - rectWidth) * 2,
-          backgroundColor: scanning ? "#65a30d80" : "#02061780",
+          right: rectWidth + (dimensions.width - rectWidth) / 2 - 2,
+          backgroundColor: scanning ? SCANNING_COLOR : DEFAULT_COLOR,
+          opacity: OPACITY,
         }}
       />
       <View
         style={{
           position: "absolute",
           top: 0,
-          left: (dimensions.width - rectWidth) * 2,
+          left: rectWidth + (dimensions.width - rectWidth) / 2 - 2,
           bottom: 0,
           right: 0,
-          backgroundColor: scanning ? "#65a30d80" : "#02061780",
+          backgroundColor: scanning ? SCANNING_COLOR : DEFAULT_COLOR,
+          opacity: OPACITY,
         }}
       />
       <View
         style={{
           position: "absolute",
-          top: rectTop + rectHeight,
-          right: (dimensions.width - rectWidth) / 2,
+          top: rectTop + rectHeight - 2,
+          right: (dimensions.width - rectWidth) / 2 + 2,
           bottom: 0,
-          left: (dimensions.width - rectWidth) / 2,
-          backgroundColor: scanning ? "#65a30d80" : "#02061780",
+          left: (dimensions.width - rectWidth) / 2 + 2,
+          backgroundColor: scanning ? SCANNING_COLOR : DEFAULT_COLOR,
+          opacity: OPACITY,
         }}
       />
       <View
         style={{
           position: "absolute",
           top: 0,
-          right: (dimensions.width - rectWidth) / 2,
-          bottom: dimensions.height - rectTop,
-          left: (dimensions.width - rectWidth) / 2,
-          backgroundColor: scanning ? "#65a30d80" : "#02061780",
+          right: (dimensions.width - rectWidth) / 2 + 2,
+          bottom: dimensions.height - rectTop - 2,
+          left: (dimensions.width - rectWidth) / 2 + 2,
+          backgroundColor: scanning ? SCANNING_COLOR : DEFAULT_COLOR,
+          opacity: OPACITY,
         }}
       />
     </>

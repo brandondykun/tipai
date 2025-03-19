@@ -1,24 +1,40 @@
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Modal,
   View,
-  Text,
-  Button,
   StyleSheet,
   useWindowDimensions,
+  Pressable,
 } from "react-native";
-import { Camera, useCameraDevice } from "react-native-vision-camera";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Camera,
+  useCameraDevice,
+  useCameraPermission,
+} from "react-native-vision-camera";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as FileSystem from "expo-file-system";
+import * as Haptics from "expo-haptics";
 import TextRecognition, {
   TextRecognitionScript,
 } from "@react-native-ml-kit/text-recognition";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 import RectangleOverlay from "../RectangleOverlay/RectangleOverlay";
 import TransparentOverlay from "../TransparentOverlay/TransparentOverlay";
 import CloseButton from "../CloseButton/CloseButton";
 import AmountPreview from "../AmountPreview/AmountPreview";
 import BottomControls from "../BottomControls/BottomControls";
-import { extractAmountFromText, getAbsolutePath } from "../../utils/utils";
+import InfoModal from "../InfoModal/InfoModal";
+import CameraPermissionsModal from "../CameraPremissionModal/CameraPermissionsModal";
+import NoDeviceModal from "../NoDeviceModal/NoDeviceModal";
+import { Colors } from "../../constants/Colors";
+import { getCropDimensions } from "../../utils/utils";
+import {
+  extractAmountFromText,
+  getAbsolutePath,
+  shouldFlipOrientation,
+} from "../../utils/utils";
 
 type Props = {
   cameraVisible: boolean;
@@ -41,14 +57,22 @@ const CameraModal = ({
   const camera = useRef<Camera>(null);
   const processingTimerRef = useRef<NodeJS.Timeout | null>(null);
   const device = useCameraDevice("back");
+  const insets = useSafeAreaInsets();
+  const { hasPermission, requestPermission } = useCameraPermission();
 
-  const [hasPermission, setHasPermission] = useState<boolean>(false);
+  const [cameraPermissionDenied, setCameraPermissionDenied] =
+    useState<boolean>(true);
+  const [infoModalVisible, setInfoModalVisible] = useState<boolean>(false);
+
   const [scanning, setScanning] = useState<boolean>(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
+  const widthScale = isExpanded ? 0.45 : 0.3;
   // Define the rectangle dimensions
-  const RECT_WIDTH = dimensions.width * 0.6;
-  const RECT_HEIGHT = dimensions.height * 0.07;
+  const RECT_WIDTH = dimensions.width * widthScale;
+  const RECT_HEIGHT = dimensions.height * 0.05;
 
   // Calculate rectangle position (centered)
   const rectLeft = (dimensions.width - RECT_WIDTH) / 2;
@@ -61,39 +85,15 @@ const CameraModal = ({
       setIsProcessing(true);
 
       try {
-        // Calculate aspect ratios to handle coordinate mapping
-        const screenAspectRatio = dimensions.width / dimensions.height;
-        const imageAspectRatio = frameWidth / frameHeight;
-
-        // Calculate scaling factors
-        let scale;
-        if (screenAspectRatio > imageAspectRatio) {
-          // Image is taller relative to screen
-          scale = dimensions.width / frameWidth;
-        } else {
-          // Image is wider relative to screen
-          scale = dimensions.height / frameHeight;
-        }
-
-        // Use exact proportions from the green rectangle
-        const cropWidth = RECT_WIDTH / scale;
-        const cropHeight = RECT_HEIGHT / scale;
-
-        // Keep horizontal position the same
-        const cropX = frameWidth * (rectLeft / dimensions.width);
-
-        // Adjust vertical position with an offset factor to move it down
-        const verticalRatio = rectTop / dimensions.height;
-        const offsetFactor = 1.9; // Adjust this value to move the crop down
-        const cropY = frameHeight * (verticalRatio * offsetFactor);
-
-        console.log("Screen dimensions:", dimensions.width, dimensions.height);
-        console.log("Frame dimensions:", frameWidth, frameHeight);
-        console.log("Rectangle position:", rectLeft, rectTop);
-        console.log("Vertical ratio:", verticalRatio);
-        console.log("Adjusted vertical ratio:", verticalRatio * offsetFactor);
-        console.log("Crop position:", cropX, cropY);
-        console.log("Scale:", scale);
+        const { cropX, cropY, cropWidth, cropHeight } = getCropDimensions(
+          frameHeight,
+          frameWidth,
+          dimensions,
+          RECT_WIDTH,
+          RECT_HEIGHT,
+          rectLeft,
+          rectTop
+        );
 
         // crop the image
         const manipulator = ImageManipulator.ImageManipulator;
@@ -135,22 +135,16 @@ const CameraModal = ({
           // Clean and delete original photo
           const originalPath = getAbsolutePath(path);
           if (originalPath) {
-            console.log("Attempting to delete original:", originalPath);
             await FileSystem.deleteAsync(originalPath, { idempotent: true });
           }
 
           // Clean and delete cropped image
           const croppedPath = getAbsolutePath(croppedImage.uri);
           if (croppedPath) {
-            console.log("Attempting to delete cropped:", croppedPath);
             await FileSystem.deleteAsync(croppedPath, { idempotent: true });
           }
         } catch (deleteError) {
           console.error("Delete error:", deleteError);
-          console.error("Full paths:", {
-            original: path,
-            cropped: croppedImage.uri,
-          });
         }
       } catch (error) {
         console.error("Error processing frame:", error);
@@ -165,8 +159,19 @@ const CameraModal = ({
   const captureInBackground = useCallback(async () => {
     if (camera.current && !isProcessing) {
       try {
-        const photo = await camera.current.takePhoto({ flash: "off" });
-        processFrame(photo.path, photo.height, photo.width);
+        const photo = await camera.current.takePhoto({
+          flash: "off",
+          enableShutterSound: false,
+        });
+        let height = photo.height;
+        let width = photo.width;
+
+        if (shouldFlipOrientation(photo.orientation)) {
+          height = photo.width;
+          width = photo.height;
+        }
+
+        processFrame(photo.path, height, width);
       } catch (error) {
         console.error("Error capturing frame:", error);
         setIsProcessing(false);
@@ -180,7 +185,6 @@ const CameraModal = ({
   // Start background processing immediately when scanning starts
   useEffect(() => {
     if (device && hasPermission && scanning) {
-      // Remove the initial delay and start immediately
       captureInBackground();
     }
 
@@ -191,42 +195,81 @@ const CameraModal = ({
     };
   }, [device, hasPermission, captureInBackground, scanning]);
 
-  useEffect(() => {
-    checkPermission();
-  }, []);
+  const requestCameraPermission = async () => {
+    if (!hasPermission) {
+      const status = await requestPermission();
+      if (!status) {
+        setCameraPermissionDenied(true);
+        setCameraVisible(false);
+      } else {
+        setCameraPermissionDenied(false);
+      }
+    }
+  };
 
-  const checkPermission = useCallback(async () => {
-    const status = await Camera.requestCameraPermission();
-    setHasPermission(status === "granted");
+  useEffect(() => {
+    requestCameraPermission();
   }, []);
 
   if (!hasPermission) {
     return (
-      <Modal visible={cameraVisible}>
-        <View style={styles.centeredContainer}>
-          <Text>Camera permission is required</Text>
-          <Button title="Request Permission" onPress={checkPermission} />
-          <Button title="Close" onPress={() => setCameraVisible(false)} />
-        </View>
-      </Modal>
+      <CameraPermissionsModal
+        cameraVisible={cameraVisible}
+        setCameraVisible={setCameraVisible}
+        cameraPermissionDenied={cameraPermissionDenied}
+        requestCameraPermission={requestCameraPermission}
+      />
     );
   }
 
-  if (device == null) {
+  if (!device) {
     return (
-      <Modal visible={cameraVisible}>
-        <View style={styles.centeredContainer}>
-          <Text>Loading camera...</Text>
-          <Button title="Close" onPress={() => setCameraVisible(false)} />
-        </View>
-      </Modal>
+      <NoDeviceModal
+        cameraVisible={cameraVisible}
+        setCameraVisible={setCameraVisible}
+      />
     );
   }
 
   return (
     <Modal visible={cameraVisible}>
       <CloseButton setCameraVisible={setCameraVisible} />
-      <AmountPreview totalAmount={totalAmount} scanning={scanning} />
+      <View
+        style={{
+          position: "absolute",
+          top: insets.top + 4,
+          right: 16,
+          zIndex: 10,
+        }}
+      >
+        <Pressable
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            setIsExpanded((prev) => !prev);
+          }}
+          hitSlop={10}
+          style={({ pressed }) => [
+            {
+              opacity: pressed ? 0.6 : 1,
+            },
+          ]}
+        >
+          {isExpanded ? (
+            <MaterialCommunityIcons
+              name="arrow-collapse-horizontal"
+              size={28}
+              color={Colors.slate[300]}
+            />
+          ) : (
+            <MaterialCommunityIcons
+              name="arrow-expand-horizontal"
+              size={28}
+              color={Colors.slate[300]}
+            />
+          )}
+        </Pressable>
+      </View>
+      <AmountPreview totalAmount={totalAmount} />
       <Camera
         ref={camera}
         style={StyleSheet.absoluteFill}
@@ -234,6 +277,7 @@ const CameraModal = ({
         isActive={cameraVisible}
         photo={true}
         photoQualityBalance="speed"
+        outputOrientation="device"
       />
       <RectangleOverlay
         scanning={scanning}
@@ -252,17 +296,11 @@ const CameraModal = ({
         setScanning={setScanning}
         camera={camera}
         setCameraVisible={setCameraVisible}
+        setInfoModalVisible={setInfoModalVisible}
       />
+      <InfoModal visible={infoModalVisible} setVisible={setInfoModalVisible} />
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  centeredContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
 
 export default CameraModal;

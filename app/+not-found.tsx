@@ -4,17 +4,17 @@ import React from "react";
 
 import { Colors } from "@/constants/Colors";
 
-export default function NotFoundScreen() {
+const NotFoundScreen = () => {
   return (
     <>
       <Stack.Screen options={{ title: "Oops!" }} />
-      <View style={styles.container}>
+      <View style={s.container}>
         <Text
           style={{ color: Colors.slate[100], fontSize: 24, fontWeight: "bold" }}
         >
           This screen doesn't exist.
         </Text>
-        <Link href="/" style={styles.link}>
+        <Link href="/" style={s.link}>
           <Text
             style={{
               color: Colors.slate[100],
@@ -28,9 +28,11 @@ export default function NotFoundScreen() {
       </View>
     </>
   );
-}
+};
 
-const styles = StyleSheet.create({
+export default NotFoundScreen;
+
+const s = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",

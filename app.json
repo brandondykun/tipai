@@ -4,7 +4,7 @@
     "slug": "tipai",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/ios-dark.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,16 +13,20 @@
       "infoPlist": {
         "NSCameraUsageDescription": "Allow TipAI to access your camera"
       },
-      "bundleIdentifier": "com.bdykun.tipai"
+      "bundleIdentifier": "com.bdykun.tipai",
+      "icon": {
+        "dark": "./assets/images/ios-dark.png",
+        // "light": "./assets/images/ios-light.png",
+        "tinted": "./assets/images/ios-tinted.png"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "monochromeImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#020617"
       },
-      "permissions": [
-        "android.permission.CAMERA"
-      ],
+      "permissions": ["android.permission.CAMERA"],
       "package": "com.bdykun.tipai"
     },
     "web": {
@@ -35,10 +39,16 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          // "image": "./assets/images/splash-icon-light.png",
+          "image": "./assets/images/splash-icon-dark.png",
           "imageWidth": 200,
           "resizeMode": "contain",
+          // "backgroundColor": "#f8fafc",
           "backgroundColor": "#020617"
+          // "dark": {
+          //   "image": "./assets/images/splash-icon-dark.png",
+          //   "backgroundColor": "#020617"
+          // }
         }
       ],
       "react-native-vision-camera"

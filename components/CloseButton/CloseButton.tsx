@@ -9,9 +9,13 @@ type Props = {
 
 const CloseButton = ({ setCameraVisible }: Props) => {
   const insets = useSafeAreaInsets();
+
   return (
-    <View style={[styles.closeButtonContainer, { top: insets.top }]}>
-      <Pressable onPress={() => setCameraVisible(false)}>
+    <View style={[s.closeButtonContainer, { top: insets.top }]}>
+      <Pressable
+        onPress={() => setCameraVisible(false)}
+        style={({ pressed }) => [{ width: 50, opacity: pressed ? 0.6 : 1 }]}
+      >
         <AntDesign name="close" size={32} color={Colors.slate[200]} />
       </Pressable>
     </View>
@@ -20,7 +24,7 @@ const CloseButton = ({ setCameraVisible }: Props) => {
 
 export default CloseButton;
 
-const styles = StyleSheet.create({
+const s = StyleSheet.create({
   closeButtonContainer: {
     position: "absolute",
     left: 0,

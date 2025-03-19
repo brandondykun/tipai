@@ -1,72 +1,49 @@
-import { View, Text, StyleSheet, Pressable, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import * as Haptics from "expo-haptics";
 import { Camera } from "react-native-vision-camera";
 import { Colors } from "../../constants/Colors";
-const dimensions = Dimensions.get("window");
+import DoneButton from "../DoneButton/DoneButton";
+import ScanButton from "../ScanButton/ScanButton";
 
 type Props = {
   setScanning: React.Dispatch<React.SetStateAction<boolean>>;
   camera: React.RefObject<Camera>;
   setCameraVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setInfoModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const BottomControls = ({ setScanning, camera, setCameraVisible }: Props) => {
+const BottomControls = ({
+  setScanning,
+  camera,
+  setCameraVisible,
+  setInfoModalVisible,
+}: Props) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.root, { bottom: insets.bottom + 24 }]}>
+    <View style={[s.root, { bottom: insets.bottom + 24 }]}>
       <View>
-        <Text style={{ textAlign: "center", color: "#e2e8f0" }}>
-          Press and hold to Scan
-        </Text>
+        <Text style={s.helpText}>Press and hold to Scan</Text>
       </View>
-      <View style={styles.controls}>
-        <View style={{ flex: 1 }} />
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+      <View style={s.controls}>
+        <View style={s.buttonContainer}>
           <Pressable
-            onLongPress={() => {
-              setScanning(true); // Move this before haptics
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              camera.current?.focus({
-                x: dimensions.width / 2,
-                y: dimensions.height / 4,
-              });
-            }}
-            onPressOut={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              setScanning(false);
-            }}
-            style={({ pressed }) => pressed && { opacity: 0.6 }}
+            onPress={() => setInfoModalVisible(true)}
+            style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
           >
-            <View style={styles.scanButton}>
-              <Ionicons name="scan" size={36} color="black" />
-            </View>
+            <Ionicons
+              name="information-circle-outline"
+              size={36}
+              color={Colors.slate[400]}
+            />
           </Pressable>
         </View>
-
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Pressable
-            style={({ pressed }) => [
-              {
-                opacity: pressed ? 0.6 : 1,
-                backgroundColor: "#0f172a",
-                borderRadius: 100,
-                padding: 2,
-              },
-            ]}
-            onPress={() => {
-              setCameraVisible(false);
-            }}
-          >
-            <AntDesign name="checkcircle" size={38} color="#65a30d" />
-          </Pressable>
+        <View style={s.buttonContainer}>
+          <ScanButton setScanning={setScanning} camera={camera} />
+        </View>
+        <View style={s.buttonContainer}>
+          <DoneButton setCameraVisible={setCameraVisible} />
         </View>
       </View>
     </View>
@@ -75,49 +52,28 @@ const BottomControls = ({ setScanning, camera, setCameraVisible }: Props) => {
 
 export default BottomControls;
 
-const styles = StyleSheet.create({
+const s = StyleSheet.create({
   root: {
     position: "absolute",
     left: 16,
     right: 16,
     gap: 4,
   },
-  centeredContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   controls: {
     backgroundColor: Colors.slate[950],
     paddingVertical: 12,
     borderRadius: 100,
     borderWidth: 1,
-    borderColor: Colors.slate[900],
+    borderColor: Colors.slate[800],
     flexDirection: "row",
   },
-  text: {
-    position: "absolute",
-    left: 0,
-    right: 0,
+  buttonContainer: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  textContainer: {
-    backgroundColor: "#020617",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "#334155",
-  },
-  scanButton: {
-    backgroundColor: Colors.slate[200],
-    width: 80,
-    height: 80,
-    borderRadius: 100,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: Colors.slate[400],
+  helpText: {
+    textAlign: "center",
+    color: Colors.slate[200],
   },
 });

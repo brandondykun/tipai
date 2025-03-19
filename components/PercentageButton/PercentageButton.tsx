@@ -2,11 +2,11 @@ import { Pressable, Text, StyleSheet } from "react-native";
 import * as Haptics from "expo-haptics";
 import { Colors } from "@/constants/Colors";
 
-interface PercentageButtonProps {
+type PercentageButtonProps = {
   percentage: number;
   onPress: () => void;
   selectedPercentage: number;
-}
+};
 
 const PercentageButton = ({
   percentage,
@@ -27,7 +27,7 @@ const PercentageButton = ({
         },
       ]}
       onPress={() => {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         onPress();
       }}
     >
@@ -45,12 +45,11 @@ const s = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 10,
     flex: 1,
-    maxWidth: 100,
+    maxWidth: 120,
   },
   text: {
     color: Colors.slate[100],
     fontSize: 20,
-    fontWeight: "bold",
     textAlign: "center",
   },
 });
