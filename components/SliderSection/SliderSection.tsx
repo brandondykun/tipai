@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Dimensions, StyleSheet } from "react-native";
+import { View, Text, Pressable, Dimensions } from "react-native";
 import { Colors } from "../../constants/Colors";
 import * as Haptics from "expo-haptics";
 import Slider from "@react-native-community/slider";
@@ -19,12 +19,14 @@ const SliderSection = ({
   const dimensions = Dimensions.get("window");
 
   return (
-    <View style={s.root}>
-      <View style={s.tipPercentageContainer}>
-        <Text style={s.tipPercentageLabel}>Tip Percentage:</Text>
-        <Text style={s.tipPercentage}>{(tipPercentage * 100).toFixed(0)}%</Text>
+    <View className="justify-center items-center">
+      <View className="flex-row items-center gap-2 mb-4">
+        <Text className="text-slate-500 text-2xl">Tip Percentage:</Text>
+        <Text className="text-slate-100 w-15 text-2xl">
+          {(tipPercentage * 100).toFixed(0)}%
+        </Text>
       </View>
-      <View style={s.mainContent}>
+      <View className="flex-row items-center gap-4 justify-between px-0">
         <Pressable
           onPress={() => {
             if (tipPercentage > 0) {
@@ -38,13 +40,12 @@ const SliderSection = ({
             }
           }}
           hitSlop={10}
-          style={({ pressed }) => [
-            s.incrementButton,
-            { opacity: pressed ? 0.5 : 1 },
-          ]}
+          className={`h-9 w-9 bg-slate-800 justify-center items-center rounded-lg active:opacity-50 ${
+            tipPercentage === 0 ? "opacity-50" : "opacity-100"
+          }`}
           disabled={tipPercentage === 0}
         >
-          <Text style={s.incrementButtonText}>-</Text>
+          <Text className="text-slate-100 text-2xl -mt-[1px]">-</Text>
         </Pressable>
         <Slider
           style={{ width: dimensions.width - 130, height: 40 }}
@@ -53,14 +54,14 @@ const SliderSection = ({
           step={0.01}
           value={sliderValue}
           minimumTrackTintColor={Colors.slate[300]}
-          maximumTrackTintColor={Colors.slate[800]}
+          maximumTrackTintColor={Colors.slate[900]}
           onValueChange={(value) =>
             setTipPercentage(parseFloat(value.toFixed(2)))
           }
           onSlidingComplete={(value) =>
             setSliderValue(parseFloat(value.toFixed(2)))
           }
-          thumbTintColor={Colors.slate[50]}
+          thumbTintColor={Colors.slate[200]}
         />
         <Pressable
           onPress={() => {
@@ -75,13 +76,10 @@ const SliderSection = ({
             }
           }}
           hitSlop={10}
-          style={({ pressed }) => [
-            s.incrementButton,
-            { opacity: pressed ? 0.5 : 1 },
-          ]}
+          className="h-9 w-9 bg-slate-800 justify-center items-center rounded-lg active:opacity-50"
           disabled={tipPercentage === 1}
         >
-          <Text style={s.incrementButtonText}>+</Text>
+          <Text className="text-slate-100 text-2xl -mt-[1px]">+</Text>
         </Pressable>
       </View>
     </View>
@@ -89,45 +87,3 @@ const SliderSection = ({
 };
 
 export default SliderSection;
-
-const s = StyleSheet.create({
-  root: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  tipPercentageContainer: {
-    marginBottom: 12,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  tipPercentageLabel: {
-    color: Colors.slate[400],
-    fontSize: 20,
-  },
-  tipPercentage: {
-    color: Colors.slate[100],
-    fontSize: 20,
-    width: 50,
-  },
-  mainContent: {
-    paddingHorizontal: 16,
-    flexDirection: "row",
-    gap: 16,
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  incrementButton: {
-    height: 32,
-    width: 32,
-    backgroundColor: Colors.slate[800],
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  incrementButtonText: {
-    color: Colors.slate[100],
-    fontSize: 24,
-    marginTop: -2,
-  },
-});

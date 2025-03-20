@@ -9,14 +9,7 @@ type Props = {
 const DoneButton = ({ setCameraVisible }: Props) => {
   return (
     <Pressable
-      style={({ pressed }) => [
-        {
-          opacity: pressed ? 0.6 : 1,
-          backgroundColor: Colors.slate[900],
-          borderRadius: 100,
-          padding: 2,
-        },
-      ]}
+      className="bg-slate-900 rounded-full p-[2px] active:opacity-60"
       onPress={() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         setCameraVisible && setCameraVisible(false);

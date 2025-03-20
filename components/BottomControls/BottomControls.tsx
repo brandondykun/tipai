@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { Camera } from "react-native-vision-camera";
@@ -22,12 +22,17 @@ const BottomControls = ({
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[s.root, { bottom: insets.bottom + 24 }]}>
+    <View
+      style={{ bottom: insets.bottom + 24 }}
+      className="absolute gap-1 left-5 right-5"
+    >
       <View>
-        <Text style={s.helpText}>Press and hold to Scan</Text>
+        <Text className="text-slate-200 text-center">
+          Press and hold to Scan
+        </Text>
       </View>
-      <View style={s.controls}>
-        <View style={s.buttonContainer}>
+      <View className="bg-slate-950 py-4 rounded-full border border-slate-800 flex-row">
+        <View className="flex-1 justify-center items-center">
           <Pressable
             onPress={() => setInfoModalVisible(true)}
             style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
@@ -39,10 +44,10 @@ const BottomControls = ({
             />
           </Pressable>
         </View>
-        <View style={s.buttonContainer}>
+        <View className="flex-1 justify-center items-center">
           <ScanButton setScanning={setScanning} camera={camera} />
         </View>
-        <View style={s.buttonContainer}>
+        <View className="flex-1 justify-center items-center">
           <DoneButton setCameraVisible={setCameraVisible} />
         </View>
       </View>
@@ -51,29 +56,3 @@ const BottomControls = ({
 };
 
 export default BottomControls;
-
-const s = StyleSheet.create({
-  root: {
-    position: "absolute",
-    left: 16,
-    right: 16,
-    gap: 4,
-  },
-  controls: {
-    backgroundColor: Colors.slate[950],
-    paddingVertical: 12,
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: Colors.slate[800],
-    flexDirection: "row",
-  },
-  buttonContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  helpText: {
-    textAlign: "center",
-    color: Colors.slate[200],
-  },
-});

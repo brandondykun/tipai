@@ -21,9 +21,10 @@ const CameraPermissionsModal = ({
   return (
     <Modal visible={cameraVisible}>
       <View
-        style={[s.centeredContainer, { paddingBottom: insets.bottom + 48 }]}
+        style={{ paddingBottom: insets.bottom + 48 }}
+        className="flex-1 justify-center items-center bg-slate-900"
       >
-        <View style={s.mainContent}>
+        <View className="flex-1 justify-center items-center gap-6">
           {!cameraPermissionDenied ? (
             <>
               <Text style={s.helpText}>Camera permission is required.</Text>
@@ -71,18 +72,6 @@ const CameraPermissionsModal = ({
 export default CameraPermissionsModal;
 
 const s = StyleSheet.create({
-  centeredContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: Colors.slate[900],
-  },
-  mainContent: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 24,
-  },
   helpText: {
     color: Colors.slate[200],
     fontSize: 22,

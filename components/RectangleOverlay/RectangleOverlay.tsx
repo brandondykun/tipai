@@ -56,7 +56,7 @@ const RectangleOverlay = ({ scanning, left, top, width, height }: Props) => {
           },
         ]}
       >
-        <View style={s.relativeWrapper}>
+        <View className="relative justify-center overflow-hidden h-full w-full">
           <Animated.View
             style={[
               s.scanLine,
@@ -66,14 +66,22 @@ const RectangleOverlay = ({ scanning, left, top, width, height }: Props) => {
               },
             ]}
           />
-          <Text style={[s.overlayText, { opacity: scanning ? 0.4 : 0.7 }]}>
+          <Text
+            className={`text-slate-900 font-bold text-2xl text-center ${
+              scanning ? "opacity-40" : "opacity-70"
+            }`}
+          >
             __.__
           </Text>
         </View>
       </View>
       <View style={[s.overlayTextContainer, { top: top + height + 10 }]}>
-        <Text style={s.helperText}>Place amount in box above then</Text>
-        <Text style={s.helperText}>hold scan button below</Text>
+        <Text className="text-slate-50 text-center z-10">
+          Place amount in box above then
+        </Text>
+        <Text className="text-slate-50 text-center z-10">
+          hold scan button below
+        </Text>
       </View>
     </>
   );
@@ -90,29 +98,11 @@ const s = StyleSheet.create({
     borderRadius: 7,
     zIndex: 10,
   },
-  overlayText: {
-    color: Colors.slate[900],
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
   overlayTextContainer: {
     position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-  },
-  helperText: {
-    color: Colors.slate[50],
-    textAlign: "center",
-    zIndex: 10,
-  },
-  relativeWrapper: {
-    position: "relative",
-    width: "100%",
-    height: "100%",
-    overflow: "hidden",
-    justifyContent: "center",
   },
   scanLine: {
     position: "absolute",

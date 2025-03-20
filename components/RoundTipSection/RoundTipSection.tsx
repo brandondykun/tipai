@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { Colors } from "@/constants/Colors";
 import * as Haptics from "expo-haptics";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -24,19 +24,21 @@ const RoundTipSection = ({
   const alreadyRounded = !roundTip && tip.endsWith("00");
 
   return (
-    <View style={s.root}>
+    <View className="flex-row justify-between items-center mb-6 px-6">
       <View>
-        <Text style={s.title}>Round Tip?</Text>
+        <Text className="text-slate-400 text-xl">Round Tip?</Text>
         {roundTip ? (
-          <Text style={s.roundedText}>
+          <Text className="text-slate-500 font-light text-lg">
             Rounded Tip Percentage:{" "}
             {((roundedTip / totalAmount) * 100).toFixed(2)}%
           </Text>
         ) : (
-          <Text style={s.secondaryText}>Round tip to nearest dollar.</Text>
+          <Text className="text-slate-500 font-light text-lg">
+            Round tip to nearest dollar.
+          </Text>
         )}
       </View>
-      <View style={s.buttonsContainer}>
+      <View className="flex-row gap-2">
         <Pressable
           onPress={() => {
             setRoundTotal(null);
@@ -44,15 +46,9 @@ const RoundTipSection = ({
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
           }}
           hitSlop={10}
-          style={[
-            s.incrementButton,
-            {
-              borderColor:
-                roundTip === "up" ? Colors.lime[500] : Colors.slate[800],
-              borderWidth: 1,
-              opacity: alreadyRounded ? 0.5 : 1,
-            },
-          ]}
+          className={`h-9 w-9 bg-slate-800 justify-center items-center rounded-lg border ${
+            roundTip === "up" ? "border-lime-500" : "border-slate-800"
+          } ${alreadyRounded ? "opacity-50" : "opacity-100"} active:opacity-60`}
           disabled={alreadyRounded}
           testID="round-tip-up-button"
         >
@@ -65,15 +61,9 @@ const RoundTipSection = ({
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
           }}
           hitSlop={10}
-          style={[
-            s.incrementButton,
-            {
-              borderColor:
-                roundTip === "down" ? Colors.lime[500] : Colors.slate[800],
-              borderWidth: 1,
-              opacity: alreadyRounded ? 0.5 : 1,
-            },
-          ]}
+          className={`h-9 w-9 bg-slate-800 justify-center items-center rounded-lg border ${
+            roundTip === "down" ? "border-lime-500" : "border-slate-800"
+          } ${alreadyRounded ? "opacity-50" : "opacity-100"} active:opacity-60`}
           disabled={alreadyRounded}
           testID="round-tip-down-button"
         >
@@ -85,38 +75,3 @@ const RoundTipSection = ({
 };
 
 export default RoundTipSection;
-
-const s = StyleSheet.create({
-  root: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 24,
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  title: {
-    color: Colors.slate[300],
-    fontSize: 18,
-  },
-  secondaryText: {
-    color: Colors.slate[500],
-    fontSize: 16,
-    fontWeight: "300",
-  },
-  buttonsContainer: {
-    flexDirection: "row",
-    gap: 8,
-  },
-  incrementButton: {
-    height: 32,
-    width: 32,
-    backgroundColor: Colors.slate[800],
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  roundedText: {
-    color: Colors.slate[500],
-    fontSize: 16,
-  },
-});

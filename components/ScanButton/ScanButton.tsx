@@ -1,7 +1,6 @@
-import { Pressable, View, Text, StyleSheet, Dimensions } from "react-native";
+import { Pressable, View, Text, Dimensions } from "react-native";
 import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "../../constants/Colors";
 import { Camera } from "react-native-vision-camera";
 
 type Props = {
@@ -26,12 +25,12 @@ const ScanButton = ({ setScanning, camera }: Props) => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         setScanning && setScanning(false);
       }}
-      style={({ pressed }) => pressed && { opacity: 0.6 }}
+      className="active:opacity-60"
     >
-      <View style={s.scanButton}>
+      <View className="bg-slate-200 border border-slate-400 relative justify-center items-center rounded-full h-24 w-24">
         <Ionicons name="scan" size={52} color="black" />
-        <View style={s.scanButtonTextContainer}>
-          <Text style={s.buttonText}>Scan</Text>
+        <View className="absolute top-0 left-0 right-0 bottom-0 justify-center items-center">
+          <Text className="text-slate-950 text-[8px] uppercase">Scan</Text>
         </View>
       </View>
     </Pressable>
@@ -39,31 +38,3 @@ const ScanButton = ({ setScanning, camera }: Props) => {
 };
 
 export default ScanButton;
-
-const s = StyleSheet.create({
-  scanButton: {
-    backgroundColor: Colors.slate[200],
-    width: 80,
-    height: 80,
-    borderRadius: 100,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: Colors.slate[400],
-    position: "relative",
-  },
-  scanButtonTextContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonText: {
-    color: Colors.slate[950],
-    fontSize: 8,
-    textTransform: "uppercase",
-  },
-});

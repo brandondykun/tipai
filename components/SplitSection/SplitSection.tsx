@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  Switch,
-  Platform,
-} from "react-native";
+import { View, Text, Pressable, Switch, Platform } from "react-native";
 import { useState } from "react";
 import { Colors } from "../../constants/Colors";
 import React from "react";
@@ -27,15 +20,17 @@ const SplitSection = ({ totalAmount }: Props) => {
   const splitRemainder = Math.round((totalAmount - splitAmount * split) * 100);
 
   return (
-    <View style={s.root}>
-      <View style={s.headerSection}>
+    <View className="mt-7 p-5">
+      <View className="flex-row justify-between items-center mb-6">
         <Pressable
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
             setShouldSplit((prev) => !prev);
           }}
         >
-          <Text style={s.headerTitle}>Split the Bill?</Text>
+          <Text className="text-slate-400 font-bold uppercase tracking-widest text-xl">
+            Split the Bill?
+          </Text>
         </Pressable>
         <Switch
           value={shouldSplit}
@@ -57,9 +52,9 @@ const SplitSection = ({ totalAmount }: Props) => {
       </View>
       {shouldSplit ? (
         <>
-          <View style={s.peopleSection}>
-            <Text style={s.peopleSectionTitle}>How many people?</Text>
-            <View style={s.peopleSectionButtons}>
+          <View className="flex-row justify-between items-center mb-4">
+            <Text className="text-slate-200 text-2xl">How many people?</Text>
+            <View className="flex-row items-center gap-2">
               <Pressable
                 onPress={() => {
                   setSplit((prev) => (prev > 1 ? prev - 1 : prev));
@@ -68,39 +63,37 @@ const SplitSection = ({ totalAmount }: Props) => {
                   }
                 }}
                 hitSlop={10}
-                style={({ pressed }) => [
-                  s.incrementButton,
-                  {
-                    opacity: split === 1 ? 0.5 : pressed ? 0.5 : 1,
-                  },
-                ]}
+                className={`bg-slate-800 rounded-lg h-8 w-8 justify-center items-center active:opacity-50 ${
+                  split === 1 ? "opacity-50" : ""
+                }`}
                 disabled={split === 1}
               >
-                <Text style={s.incrementButtonText}>-</Text>
+                <Text className="text-slate-100 text-2xl -mt-[2px]">-</Text>
               </Pressable>
-              <Text style={s.numberOfPeopleText}>{split}</Text>
+              <Text className="text-slate-100 text-2xl font-bold text-center w-12">
+                {split}
+              </Text>
               <Pressable
                 onPress={() => {
                   setSplit(split + 1);
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                 }}
-                style={({ pressed }) => [
-                  s.incrementButton,
-                  { opacity: pressed ? 0.5 : 1 },
-                ]}
                 hitSlop={10}
+                className="bg-slate-800 rounded-lg h-8 w-8 justify-center items-center active:opacity-50"
               >
-                <Text style={s.incrementButtonText}>+</Text>
+                <Text className="text-slate-100 text-2xl -mt-[2px]">+</Text>
               </Pressable>
             </View>
           </View>
           <View>
-            <Text style={s.eachPersonText}>Each person should contribute:</Text>
-            <View style={s.eachPersonTotalsContainer}>
-              <Text style={s.amountText}>
+            <Text className="text-slate-400 text-xl font-light">
+              Each person should contribute:
+            </Text>
+            <View className="flex-row gap-2 mt-1 items-end">
+              <Text className="text-slate-300 text-3xl">
                 {formatCurrency(splitAmount.toFixed(2))}
               </Text>
-              <Text style={s.remainderText}>
+              <Text className="text-slate-500 text-xl mb-[2px]">
                 (Remainder: {splitRemainder}¢)
               </Text>
             </View>
@@ -112,81 +105,3 @@ const SplitSection = ({ totalAmount }: Props) => {
 };
 
 export default SplitSection;
-
-const s = StyleSheet.create({
-  root: {
-    marginTop: 24,
-    padding: 18,
-  },
-  headerSection: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  headerTitle: {
-    color: Colors.slate[400],
-    fontSize: 18,
-    fontWeight: "bold",
-    textTransform: "uppercase",
-    letterSpacing: 2,
-  },
-  peopleSection: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 12,
-  },
-  peopleSectionTitle: {
-    color: Colors.slate[200],
-    fontSize: 22,
-    fontWeight: "400",
-  },
-  peopleSectionButtons: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  incrementButton: {
-    height: 32,
-    width: 32,
-    backgroundColor: Colors.slate[800],
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  incrementButtonText: {
-    color: Colors.slate[100],
-    fontSize: 24,
-    marginTop: -2,
-  },
-  numberOfPeopleText: {
-    color: Colors.slate[100],
-    fontSize: 22,
-    width: 40,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  eachPersonText: {
-    color: Colors.slate[400],
-    fontSize: 18,
-    marginTop: 6,
-    fontWeight: "300",
-  },
-  eachPersonTotalsContainer: {
-    flexDirection: "row",
-    gap: 6,
-    marginTop: 6,
-    alignItems: "flex-end",
-  },
-  amountText: {
-    color: Colors.slate[300],
-    fontSize: 24,
-  },
-  remainderText: {
-    color: Colors.slate[500],
-    fontSize: 18,
-    fontWeight: "300",
-    marginBottom: 3,
-  },
-});

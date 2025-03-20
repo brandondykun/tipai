@@ -1,5 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { Colors } from "../../constants/Colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -11,7 +11,10 @@ const CloseButton = ({ setCameraVisible }: Props) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[s.closeButtonContainer, { top: insets.top }]}>
+    <View
+      style={{ top: insets.top }}
+      className="absolute left-0 right-0 pl-4 z-10"
+    >
       <Pressable
         onPress={() => setCameraVisible(false)}
         style={({ pressed }) => [{ width: 50, opacity: pressed ? 0.6 : 1 }]}
@@ -23,13 +26,3 @@ const CloseButton = ({ setCameraVisible }: Props) => {
 };
 
 export default CloseButton;
-
-const s = StyleSheet.create({
-  closeButtonContainer: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    paddingLeft: 16,
-    zIndex: 10,
-  },
-});

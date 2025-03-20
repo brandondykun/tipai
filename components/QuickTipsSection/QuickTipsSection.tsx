@@ -1,7 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 import PercentageButton from "../PercentageButton/PercentageButton";
-import { Colors } from "@/constants/Colors";
 
 type Props = {
   tipPercentage: number;
@@ -21,9 +20,11 @@ const QuickTipsSection = ({
 
   return (
     <View style={{ alignItems: "center" }}>
-      <Text style={s.titleText}>Quick Tips</Text>
-      <View style={s.wrapperContainer}>
-        <View style={s.content}>
+      <Text className="text-slate-500 uppercase font-bold tracking-widest mb-3 text-md">
+        Quick Tips
+      </Text>
+      <View className="flex-1 min-w-[320px]">
+        <View className="flex-row gap-2 justify-center">
           <PercentageButton
             percentage={0.05}
             selectedPercentage={tipPercentage}
@@ -56,22 +57,3 @@ const QuickTipsSection = ({
 };
 
 export default QuickTipsSection;
-
-const s = StyleSheet.create({
-  titleText: {
-    color: Colors.slate[500],
-    fontSize: 14,
-    marginBottom: 12,
-    textTransform: "uppercase",
-    letterSpacing: 1,
-    fontWeight: "700",
-  },
-  wrapperContainer: {
-    flex: 1,
-    minWidth: 330,
-  },
-  content: {
-    flexDirection: "row",
-    gap: 8,
-  },
-});

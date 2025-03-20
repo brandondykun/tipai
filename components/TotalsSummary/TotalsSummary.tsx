@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 import CurrencyInput from "react-native-currency-input";
 import { Colors } from "@/constants/Colors";
 import { formatCurrency } from "@/utils/utils";
@@ -19,13 +19,15 @@ const TotalsSummary = ({
   setTotalAmount,
 }: Props) => {
   return (
-    <View style={s.totalsContainer}>
-      <View style={s.totalsRow}>
-        <Text style={s.totalsTitle}>Bill Amount</Text>
-        <View style={s.guideLine} />
+    <View className="mb-8 p-4 mx-4 gap-2 rounded-xl bg-slate-900 border border-slate-800">
+      <View className="flex-row items-center justify-between gap-2">
+        <Text className="text-slate-200 uppercase text-xl tracking-wider font-bold">
+          Bill Amount
+        </Text>
+        <View className="flex-1 h-[1px] bg-slate-800 opacity-50 mt-4" />
         <CurrencyInput
           ref={currencyInputRef}
-          style={s.totalsAmount}
+          className="text-slate-100 text-2xl leading-7"
           value={totalAmount}
           onChangeValue={(value) => setTotalAmount(value || 0)}
           prefix="$"
@@ -38,54 +40,22 @@ const TotalsSummary = ({
           selectionColor={Colors.lime[500]}
         />
       </View>
-      <View style={s.totalsRow}>
-        <Text style={s.totalsTitle}>Tip</Text>
-        <View style={s.guideLine} />
-        <Text style={s.totalsAmount}>{formatCurrency(tip)}</Text>
+      <View className="flex-row items-center justify-between gap-2">
+        <Text className="text-slate-200 uppercase text-xl tracking-wider font-bold">
+          Tip
+        </Text>
+        <View className="flex-1 h-[1px] bg-slate-800 opacity-50 mt-4" />
+        <Text className="text-slate-100 text-2xl">{formatCurrency(tip)}</Text>
       </View>
-      <View style={s.totalsRow}>
-        <Text style={s.totalsTitle}>Total</Text>
-        <View style={s.guideLine} />
-        <Text style={s.totalsAmount}>{formatCurrency(total)}</Text>
+      <View className="flex-row items-center justify-between gap-2">
+        <Text className="text-slate-200 uppercase text-xl tracking-wider font-bold">
+          Total
+        </Text>
+        <View className="flex-1 h-[1px] bg-slate-800 opacity-50 mt-4" />
+        <Text className="text-slate-100 text-2xl">{formatCurrency(total)}</Text>
       </View>
     </View>
   );
 };
 
 export default TotalsSummary;
-
-const s = StyleSheet.create({
-  totalsContainer: {
-    marginBottom: 24,
-    padding: 16,
-    marginHorizontal: 16,
-    backgroundColor: Colors.slate[900],
-    borderRadius: 12,
-    gap: 4,
-  },
-  totalsRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 8,
-  },
-  totalsTitle: {
-    color: Colors.slate[400],
-    fontSize: 18,
-    textAlign: "center",
-    textTransform: "uppercase",
-    letterSpacing: 2,
-  },
-  totalsAmount: {
-    color: Colors.slate[100],
-    fontSize: 22,
-    textAlign: "center",
-  },
-  guideLine: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: Colors.slate[800],
-    opacity: 0.5,
-    marginTop: 12,
-  },
-});

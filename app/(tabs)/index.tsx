@@ -1,12 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  Pressable,
-  StyleSheet,
-  Platform,
-} from "react-native";
+import { View, Text, ScrollView, Pressable, Platform } from "react-native";
 import { ImageResult } from "expo-image-manipulator";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CurrencyInput from "react-native-currency-input";
@@ -84,7 +77,7 @@ const HomeScreen = () => {
     <ScrollView
       contentContainerStyle={{
         flexGrow: 1,
-        paddingTop: Platform.OS === "ios" ? 0 : 16,
+        paddingTop: Platform.OS === "ios" ? 8 : 16,
         paddingBottom: insets.bottom + 24,
       }}
       style={{ marginTop: insets.top }}
@@ -138,7 +131,7 @@ const HomeScreen = () => {
         }}
       >
         <Pressable
-          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
+          className="active:opacity-50"
           onPress={() => {
             scrollViewRef.current?.scrollTo({
               y: 0,
@@ -147,14 +140,13 @@ const HomeScreen = () => {
             currencyInputRef.current?.focus();
           }}
         >
-          <Text style={s.manualButtonText}>Manually Enter Bill Amount</Text>
+          <Text className="text-slate-400 text-center underline text-xl">
+            Manually Enter Bill Amount
+          </Text>
         </Pressable>
         <Pressable
-          style={({ pressed }) => [
-            s.scanButton,
-            { opacity: pressed ? 0.6 : 1 },
-          ]}
           onPress={() => setCameraVisible(true)}
+          className="bg-lime-500 p-2 rounded-full flex-row items-center justify-center gap-2 mx-4 active:opacity-60"
         >
           <Ionicons name="scan" size={24} color={Colors.slate[950]} />
           <Text style={{ color: Colors.slate[950], fontSize: 22 }}>
@@ -188,22 +180,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-const s = StyleSheet.create({
-  manualButtonText: {
-    textAlign: "center",
-    color: Colors.slate[400],
-    textDecorationLine: "underline",
-    fontSize: 18,
-  },
-  scanButton: {
-    backgroundColor: Colors.lime[500],
-    padding: 8,
-    borderRadius: 100,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    marginHorizontal: 16,
-  },
-});
