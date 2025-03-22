@@ -26,7 +26,7 @@ import CloseButton from "../CloseButton/CloseButton";
 import AmountPreview from "../AmountPreview/AmountPreview";
 import BottomControls from "../BottomControls/BottomControls";
 import InfoModal from "../InfoModal/InfoModal";
-import CameraPermissionsModal from "../CameraPremissionModal/CameraPermissionsModal";
+import CameraPermissionsModal from "../CameraPermissionModal/CameraPermissionsModal";
 import NoDeviceModal from "../NoDeviceModal/NoDeviceModal";
 import { Colors } from "../../constants/Colors";
 import { getCropDimensions } from "../../utils/utils";
