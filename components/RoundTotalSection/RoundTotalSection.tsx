@@ -23,7 +23,7 @@ const RoundTotalSection = ({
   return (
     <View className="flex-row justify-between items-center mb-10 px-6">
       <View>
-        <Text className="text-slate-400 text-xl">Round Total?</Text>
+        <Text className="text-slate-300 text-xl">Round Total?</Text>
         {roundTotal ? (
           <Text className="text-slate-500 font-light text-lg">
             Rounded Tip Percentage:{" "}
