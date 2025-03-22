@@ -41,9 +41,6 @@ type Props = {
   setCameraVisible: React.Dispatch<React.SetStateAction<boolean>>;
   totalAmount: number;
   setTotalAmount: React.Dispatch<React.SetStateAction<number>>;
-  setImages: React.Dispatch<
-    React.SetStateAction<ImageManipulator.ImageResult[]>
-  >;
 };
 
 const CameraModal = ({
@@ -51,7 +48,6 @@ const CameraModal = ({
   setCameraVisible,
   totalAmount,
   setTotalAmount,
-  setImages,
 }: Props) => {
   const dimensions = useWindowDimensions();
   const camera = useRef<Camera>(null);
@@ -126,9 +122,6 @@ const CameraModal = ({
             setTotalAmount(parsedAmount);
           }
         }
-
-        // set images - TEMP for now to see what images are being captured
-        setImages((prevImages) => [...prevImages, croppedImage]);
 
         // Updated file cleanup logic
         try {

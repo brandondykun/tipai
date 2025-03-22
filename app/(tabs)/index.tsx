@@ -21,7 +21,6 @@ const HomeScreen = () => {
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [tipPercentage, setTipPercentage] = useState<number>(0.2);
   const [sliderValue, setSliderValue] = useState<number>(0.2);
-  const [images, setImages] = useState<ImageResult[]>([]);
   const currencyInputRef = useRef<CurrencyInput>(null);
   const [roundTip, setRoundTip] = useState<"up" | "down" | null>(null);
   const [roundTotal, setRoundTotal] = useState<"up" | "down" | null>(null);
@@ -123,26 +122,11 @@ const HomeScreen = () => {
           sliderValue={sliderValue}
         />
         <SplitSection totalAmount={Number(total)} />
-        {/* <View>
-        {images.map((image) => {
-          return (
-            <Image
-              key={image.uri}
-              source={{ uri: image.uri }}
-              style={{
-                width: dimensions.width,
-                height: image.height * (dimensions.width / image.width),
-              }}
-            />
-          );
-        })}
-      </View> */}
         <CameraModal
           cameraVisible={cameraVisible}
           setCameraVisible={setCameraVisible}
           totalAmount={totalAmount}
           setTotalAmount={setTotalAmount}
-          setImages={setImages}
         />
       </ScrollView>
       <BottomButtons
