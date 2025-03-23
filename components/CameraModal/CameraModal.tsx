@@ -286,6 +286,7 @@ const CameraModal = ({
         rectHeight={RECT_HEIGHT}
       />
       <BottomControls
+        scanning={scanning}
         setScanning={setScanning}
         camera={camera}
         setCameraVisible={setCameraVisible}

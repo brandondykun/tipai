@@ -7,6 +7,7 @@ import DoneButton from "../DoneButton/DoneButton";
 import ScanButton from "../ScanButton/ScanButton";
 
 type Props = {
+  scanning: boolean;
   setScanning: React.Dispatch<React.SetStateAction<boolean>>;
   camera: React.RefObject<Camera>;
   setCameraVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,6 +15,7 @@ type Props = {
 };
 
 const BottomControls = ({
+  scanning,
   setScanning,
   camera,
   setCameraVisible,
@@ -27,9 +29,15 @@ const BottomControls = ({
       className="absolute gap-1 left-5 right-5"
     >
       <View>
-        <Text className="text-slate-200 text-center">
-          Press and hold to Scan
-        </Text>
+        {!scanning ? (
+          <Text className="text-slate-200 text-center">
+            Press and hold to Scan
+          </Text>
+        ) : (
+          <Text className="text-lime-50 uppercase font-bold text-center">
+            Scanning
+          </Text>
+        )}
       </View>
       <View className="bg-slate-950 py-4 rounded-full border border-slate-800 flex-row">
         <View className="flex-1 justify-center items-center">
