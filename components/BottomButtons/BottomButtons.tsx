@@ -27,7 +27,6 @@ const BottomButtons = ({
 }: BottomButtonsProps) => {
   const insets = useSafeAreaInsets();
 
-  console.log("BOTTOM: ", insets.bottom);
   const ref = useRef<View>(null);
   const bottomPosition = insets.bottom < 50 ? 50 : insets.bottom + 12;
 
