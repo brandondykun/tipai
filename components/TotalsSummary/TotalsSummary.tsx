@@ -38,6 +38,7 @@ const TotalsSummary = ({
           placeholder="$0.00"
           keyboardType="decimal-pad"
           selectionColor={Colors.lime[500]}
+          testID="bill-amount-input"
         />
       </View>
       <View className="flex-row items-center justify-between gap-2">
@@ -45,14 +46,18 @@ const TotalsSummary = ({
           Tip
         </Text>
         <View className="flex-1 h-[1px] bg-slate-800 opacity-50 mt-4" />
-        <Text className="text-slate-100 text-2xl">{formatCurrency(tip)}</Text>
+        <Text className="text-slate-100 text-2xl" testID="tip-value">
+          {formatCurrency(tip)}
+        </Text>
       </View>
       <View className="flex-row items-center justify-between gap-2">
         <Text className="text-slate-200 uppercase text-xl tracking-wider font-bold">
           Total
         </Text>
         <View className="flex-1 h-[1px] bg-slate-800 opacity-50 mt-4" />
-        <Text className="text-slate-100 text-2xl">{formatCurrency(total)}</Text>
+        <Text className="text-slate-100 text-2xl" testID="total-value">
+          {formatCurrency(total)}
+        </Text>
       </View>
     </View>
   );
