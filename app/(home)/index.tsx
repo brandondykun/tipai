@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { View, ScrollView, Platform } from "react-native";
-import { ImageResult } from "expo-image-manipulator";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CurrencyInput from "react-native-currency-input";
 
