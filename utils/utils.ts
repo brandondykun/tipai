@@ -1,6 +1,7 @@
 import * as FileSystem from "expo-file-system";
 import { Platform } from "react-native";
-import { Orientation, PhotoFile } from "react-native-vision-camera";
+import { Orientation } from "react-native-vision-camera";
+import { formatNumber } from "react-native-currency-input";
 
 export const extractAmountFromText = (text: string) => {
   const regex = /[^0-9.]/g;
@@ -32,10 +33,12 @@ export const shouldFlipOrientation = (orientation: Orientation) => {
 };
 
 export const formatCurrency = (amount: string) => {
-  const parsedAmount = parseFloat(amount);
-  return parsedAmount.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
+  return formatNumber(Number(amount), {
+    separator: ".",
+    prefix: "$",
+    precision: 2,
+    delimiter: ",",
+    signPosition: "beforePrefix",
   });
 };
 

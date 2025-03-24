@@ -91,7 +91,7 @@ const SplitSection = ({ totalAmount }: Props) => {
             </Text>
             <View className="flex-row gap-2 mt-1 items-end">
               <Text className="text-slate-300 text-3xl">
-                {formatCurrency(splitAmount.toFixed(2))}
+                {formatCurrency(splitAmount.toString())}
               </Text>
               <Text className="text-slate-500 text-xl mb-[2px]">
                 (Remainder: {splitRemainder}¢)

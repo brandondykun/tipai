@@ -16,7 +16,7 @@ const AmountPreview = ({ totalAmount }: Props) => {
     >
       <View className="bg-slate-950 px-4 py-2 rounded-lg border border-slate-800">
         <Text className="text-slate-100 text-2xl leading-7 font-bold">
-          {formatCurrency(totalAmount.toFixed(2))}
+          {formatCurrency(totalAmount.toString())}
         </Text>
       </View>
     </View>
