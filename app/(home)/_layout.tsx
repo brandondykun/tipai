@@ -1,7 +1,8 @@
 import { Stack } from "expo-router";
 import React from "react";
 import { Colors } from "@/constants/Colors";
-export default function TabLayout() {
+
+const MainLayout = () => {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen
@@ -13,4 +14,6 @@ export default function TabLayout() {
       />
     </Stack>
   );
-}
+};
+
+export default MainLayout;
