@@ -1,50 +1,29 @@
-# Welcome to your Expo app 👋
+# Welcome to TipAI 
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+  <img style="border-radius: 10px; margin-bottom: 12px" src="./assets/images/ios-dark.png" width="60" title="Landing screen." />
 
-## Get started
+ _The Tip Calculator for the AI era._
 
-1. Install dependencies
+Built with:
+- [React Native](https://reactnative.dev/)
+- [Expo](https://docs.expo.dev/)
+- [NativeWind](https://www.nativewind.dev/)
+- [react-native-ml-kit](https://www.npmjs.com/package/@react-native-ml-kit/text-recognition)
 
-   ```bash
-   npm install
-   ```
+Available soon on Android and IOS.
 
-2. Start the app
 
-   ```bash
-    npx expo start
-   ```
+## Screenshots
 
-In the output, you'll find options to open the app in a
+<div style="display: flex; flex-direction: row; margin-bottom: 24px">
+  <img src="./screenshots/landing_blank.png" width="200" title="Landing screen." />
+  <img src="./screenshots/not_scanning.png" width="200" hspace="30" alt="Camera not scanning." />
+  <img src="./screenshots/scanning_complete.png" width="200" alt="Camera scanning bill." />
+</div>
+<br />
+<div style="display: flex; gap: 24px">
+  <img  src="./screenshots/landing_complete.png" width="200" alt="Landing screen with total calculated." />
+  <img src="./screenshots/landing_rounded_up.png" width="200" hspace="30" alt="Landing screen with rounded tip and total calculated." />
+  <img src="./screenshots/landing_rounded_up_split.png" width="200" alt="Landing screen with bill split between 2 people." />
+</div>
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
