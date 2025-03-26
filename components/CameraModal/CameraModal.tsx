@@ -65,10 +65,9 @@ const CameraModal = ({
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-  const widthScale = isExpanded ? 0.45 : 0.3;
   // Define the rectangle dimensions
-  const RECT_WIDTH = dimensions.width * widthScale;
-  const RECT_HEIGHT = dimensions.height * 0.05;
+  const RECT_WIDTH = isExpanded ? 170 : 120;
+  const RECT_HEIGHT = 38;
 
   // Calculate rectangle position (centered)
   const rectLeft = (dimensions.width - RECT_WIDTH) / 2;
@@ -150,7 +149,7 @@ const CameraModal = ({
 
   // Background frame capture function (simulates real-time)
   const captureInBackground = useCallback(async () => {
-    if (camera.current && !isProcessing) {
+    if (camera.current && !isProcessing && cameraVisible) {
       try {
         const photo = await camera.current.takePhoto({
           flash: "off",
@@ -173,11 +172,11 @@ const CameraModal = ({
       // Reduce interval from 300ms to 150ms for faster scanning
       processingTimerRef.current = setTimeout(captureInBackground, 150);
     }
-  }, [isProcessing, processFrame]);
+  }, [isProcessing, processFrame, cameraVisible]);
 
   // Start background processing immediately when scanning starts
   useEffect(() => {
-    if (device && hasPermission && scanning) {
+    if (device && hasPermission && scanning && cameraVisible) {
       captureInBackground();
     }
 
@@ -186,7 +185,7 @@ const CameraModal = ({
         clearTimeout(processingTimerRef.current);
       }
     };
-  }, [device, hasPermission, captureInBackground, scanning]);
+  }, [device, hasPermission, captureInBackground, scanning, cameraVisible]);
 
   const requestCameraPermission = async () => {
     if (!hasPermission) {
