@@ -60,7 +60,7 @@ const TransparentOverlay = ({
           position: "absolute",
           top: 0,
           right: (dimensions.width - rectWidth) / 2 + 2,
-          bottom: dimensions.height - rectTop - 2,
+          height: rectTop + 2,
           left: (dimensions.width - rectWidth) / 2 + 2,
           backgroundColor: scanning ? SCANNING_COLOR : DEFAULT_COLOR,
           opacity: OPACITY,
