@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { View, ScrollView, Platform } from "react-native";
+import { View, ScrollView, Platform, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CurrencyInput from "react-native-currency-input";
 
@@ -15,6 +15,7 @@ import BottomButtons from "@/components/BottomButtons/BottomButtons";
 const HomeScreen = () => {
   const insets = useSafeAreaInsets();
   const scrollViewRef = useRef<ScrollView>(null);
+  const dimensions = useWindowDimensions();
 
   const [cameraVisible, setCameraVisible] = useState(false);
   const [totalAmount, setTotalAmount] = useState<number>(0);
@@ -73,67 +74,72 @@ const HomeScreen = () => {
   const totalAlreadyRounded = !roundTotal && total.endsWith("00");
 
   return (
-    <View className="flex-1 relative">
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingTop: Platform.OS === "ios" ? 8 : 16,
-          paddingBottom: bottomButtonsTop + 48,
-        }}
-        style={{ marginTop: insets.top }}
-        showsVerticalScrollIndicator={false}
-        ref={scrollViewRef}
-      >
-        <View style={{ marginBottom: 36 }}>
-          <TotalsSummary
-            totalAmount={totalAmount}
-            tip={tip}
-            total={total}
-            currencyInputRef={currencyInputRef}
-            setTotalAmount={setTotalAmount}
-          />
-          <RoundTipSection
-            roundTip={roundTip}
-            setRoundTip={setRoundTip}
-            totalAmount={totalAmount}
-            roundedTip={roundedTip}
-            tip={tip}
-            setRoundTotal={setRoundTotal}
-          />
-          <RoundTotalSection
-            roundTotal={roundTotal}
-            setRoundTotal={setRoundTotal}
-            totalAmount={totalAmount}
-            roundedTip={roundedTip}
-            setRoundTip={setRoundTip}
-            totalAlreadyRounded={totalAlreadyRounded}
-          />
-          <QuickTipsSection
+    <View
+      className="flex-1 relative md:items-center"
+      style={{ paddingTop: dimensions.height > 1000 ? 24 : 0 }}
+    >
+      <View className="flex-1 relative md:w-2/3">
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingTop: Platform.OS === "ios" ? 8 : 16,
+            paddingBottom: bottomButtonsTop + 48,
+          }}
+          style={{ marginTop: insets.top }}
+          showsVerticalScrollIndicator={false}
+          ref={scrollViewRef}
+        >
+          <View style={{ marginBottom: 36 }}>
+            <TotalsSummary
+              totalAmount={totalAmount}
+              tip={tip}
+              total={total}
+              currencyInputRef={currencyInputRef}
+              setTotalAmount={setTotalAmount}
+            />
+            <RoundTipSection
+              roundTip={roundTip}
+              setRoundTip={setRoundTip}
+              totalAmount={totalAmount}
+              roundedTip={roundedTip}
+              tip={tip}
+              setRoundTotal={setRoundTotal}
+            />
+            <RoundTotalSection
+              roundTotal={roundTotal}
+              setRoundTotal={setRoundTotal}
+              totalAmount={totalAmount}
+              roundedTip={roundedTip}
+              setRoundTip={setRoundTip}
+              totalAlreadyRounded={totalAlreadyRounded}
+            />
+            <QuickTipsSection
+              tipPercentage={tipPercentage}
+              setTipPercentage={setTipPercentage}
+              setSliderValue={setSliderValue}
+            />
+          </View>
+          <SliderSection
             tipPercentage={tipPercentage}
             setTipPercentage={setTipPercentage}
             setSliderValue={setSliderValue}
+            sliderValue={sliderValue}
           />
-        </View>
-        <SliderSection
-          tipPercentage={tipPercentage}
-          setTipPercentage={setTipPercentage}
-          setSliderValue={setSliderValue}
-          sliderValue={sliderValue}
-        />
-        <SplitSection totalAmount={Number(total)} />
-        <CameraModal
-          cameraVisible={cameraVisible}
+          <SplitSection totalAmount={Number(total)} />
+          <CameraModal
+            cameraVisible={cameraVisible}
+            setCameraVisible={setCameraVisible}
+            totalAmount={totalAmount}
+            setTotalAmount={setTotalAmount}
+          />
+        </ScrollView>
+        <BottomButtons
+          scrollViewRef={scrollViewRef}
+          currencyInputRef={currencyInputRef}
           setCameraVisible={setCameraVisible}
-          totalAmount={totalAmount}
-          setTotalAmount={setTotalAmount}
+          setBottomButtonsTop={setBottomButtonsTop}
         />
-      </ScrollView>
-      <BottomButtons
-        scrollViewRef={scrollViewRef}
-        currencyInputRef={currencyInputRef}
-        setCameraVisible={setCameraVisible}
-        setBottomButtonsTop={setBottomButtonsTop}
-      />
+      </View>
     </View>
   );
 };

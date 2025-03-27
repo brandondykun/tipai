@@ -19,7 +19,7 @@ const SliderSection = ({
   const dimensions = Dimensions.get("window");
 
   return (
-    <View className="justify-center items-center">
+    <View className="justify-center items-center px-4">
       <View className="flex-row items-center gap-2 mb-4">
         <Text className="text-slate-500 text-2xl">Tip Percentage:</Text>
         <Text className="text-slate-100 w-15 text-2xl">
@@ -48,7 +48,7 @@ const SliderSection = ({
           <Text className="text-slate-100 text-2xl -mt-[1px]">-</Text>
         </Pressable>
         <Slider
-          style={{ width: dimensions.width - 130, height: 40 }}
+          style={{ flex: 1, height: 40 }}
           minimumValue={0}
           maximumValue={0.4}
           step={0.01}
